@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 from fastapi import FastAPI
 
 
@@ -58,21 +57,3 @@ def developer(desarrollador:str):
     }
     
     return res
-
-
-
-# Función informe historico por desarrollador
-
-
-
-
-
-
-
-# listado de memoria
-# if __name__ == "__main__":
-#     developer('Valve')
-
-
-# PREGUNTA 2
-
