@@ -12,7 +12,7 @@ app = FastAPI(title='Proyecto Machine Learning Operations (MLOps) by Jay Peralta
 
 
 # Cargamos los dataset
-df_developer= pd.read_parquet('df1_developer.parquet')
+df_developer= pd.read_parquet('Dataset/df1_developer.parquet')
 
 
 # Iniciamos la API
