@@ -20,6 +20,13 @@ Este proyecto fusiona la capacidad de realizar operaciones de machine learning c
 
 Para el proyecto se ha valido de herramientas como python, librerias como pandas y numpy y archivos de comprensión de datos como los de formato '.parquet'. Todo esto para realizar de la mejor manera y de forma eficiente la importación de los datos y su manejo para obtener los resultados
 
+### **Fuente de datos**
+
++ [Dataset](https://drive.google.com/drive/folders/1HqBG2-sUkz_R3h1dZU5F2uAzpRn7BSpj): Carpeta con el archivo que requieren ser procesados, tengan en cuenta que hay datos que estan anidados (un diccionario o una lista como valores en la fila).
++ [Diccionario de datos](https://docs.google.com/spreadsheets/d/1-t9HLzLHIGXvliq56UE_gMaWBVTPfrlTf2D9uAtLGrk/edit?usp=drive_link): Diccionario con algunas descripciones de las columnas disponibles en el dataset.
+
+También se han realizado y sustraido archivos pequeños esto con el motivo para realizar el trabajo más específico y con mucha mayor eficiencia, estos se encuentran en la carpeta Dataset.
+
 ---
 
 ### Análisis Realizado por ETL y EDA:
@@ -107,6 +114,7 @@ Estas funciones proporcionan funcionalidades clave para el proyecto, desde anali
    - Ayuda a comprender las preferencias de juego de los usuarios y a adaptar las recomendaciones y ofertas en función de los géneros preferidos.
 
 Estas características brindan una comprensión profunda tanto del contenido ofrecido en la plataforma como del comportamiento y las preferencias de los usuarios. Esto es esencial para mejorar la experiencia del usuario, optimizar las estrategias de negocio y maximizar la retención y la participación de los usuarios.
+
 
 ## Contacto
 
