@@ -39,7 +39,6 @@ Para el proyecto se ha valido de herramientas como python, librerias como pandas
    - Se identificaron áreas de mejora y oportunidades para optimizar las estrategias de negocio, mejorar la experiencia del usuario y aumentar la participación.
    - Los hallazgos obtenidos a partir del análisis ETL y EDA sirvieron como base para el desarrollo de las funciones de machine learning y el sistema de recomendaciones, asegurando que estén respaldadas por datos sólidos y análisis fundamentales.
 
-Al incluir este apartado, demuestras un enfoque completo y sistemático para el análisis de datos en tu proyecto, lo que refuerza la confiabilidad y la solidez de tus resultados y conclusiones.
 
 ## Uso
 Se muestra en síntesis las funciones que se desarrollaron, junto con una descripción más detallada de cada una:
