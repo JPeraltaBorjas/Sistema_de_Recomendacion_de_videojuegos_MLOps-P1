@@ -1,5 +1,4 @@
 pandas
 numpy
 fastAPI
-fastparquet
 pyarrow
