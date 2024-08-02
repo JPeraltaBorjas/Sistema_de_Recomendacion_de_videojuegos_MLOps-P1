@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from fastapi import FastAPI
+import pyarrow
 
 
 # Indicamos título y descripción de la API
@@ -10,11 +11,12 @@ app = FastAPI(title='Proyecto Machine Learning Operations (MLOps) by Jay Peralta
 
 
 # Cargamos los dataset
-df_developer= pd.read_parquet('Dataset/df1_developer.parquet')
-df_userdata=pd.read_parquet('Dataset/df2_userdata.parquet')
-df_UserForGenre_1=pd.read_parquet('Dataset/df3_UserForGenre_1.parquet')
-df_UserForGenre_2=pd.read_parquet('Dataset/df3_UserForGenre_2.parquet')
-
+df_developer= pd.read_parquet('./Dataset_funciones/df1_developer.parquet',engine='pyarrow')
+df_userdata=pd.read_parquet('./Dataset_funciones/df2_userdata.parquet',engine='pyarrow')
+df_UserForGenre_1=pd.read_parquet('./Dataset_funciones/df3_UserForGenre_1.parquet',engine='pyarrow')
+df_UserForGenre_2=pd.read_parquet('./Dataset_funciones/df3_UserForGenre_2.parquet',engine='pyarrow')
+df_BestDevYear=pd.read_parquet('./Dataset_funciones/df4_BestDeveloperYear.parquet',engine='pyarrow')
+df_DevRevAna=pd.read_parquet('./Dataset_funciones/df5_DeveloperRewiewsAnalysis.parquet',engine='pyarrow')
 
 # Iniciamos la API
 @app.get('/')
@@ -24,7 +26,7 @@ async def index():
 
 
 # Función 1
-@app.get('/desarrollador/')
+@app.get('/Developer/')
 def developer(desarrollador:str):
 
     """
@@ -66,7 +68,7 @@ def developer(desarrollador:str):
 
 
 # Función 2
-@app.get('/userdata/')
+@app.get('/Userdata/')
 def userdata(User_id:str):
 
     """
@@ -94,6 +96,7 @@ def userdata(User_id:str):
         "cantidad de items": cant_items
     }
     return res
+
 
 
 
@@ -125,3 +128,31 @@ def UserForGenre(genero:str):
     }
 
     return res
+
+
+
+
+# Función 4
+@app.get('/BestDeveloperOfYear/')
+def best_developer_year(año:int):
+    df_f4_recommendations = df_BestDevYear[df_BestDevYear.year==año]
+    developer_recommendations = df_f4_recommendations['developer'].value_counts()
+    developer_recommendations = developer_recommendations.head(3).reset_index()
+    p1 = developer_recommendations.iloc[0,0]
+    p2 = developer_recommendations.iloc[1,0]
+    p3 = developer_recommendations.iloc[2,0]
+    resp = [{"Puesto 1" : p1}, {"Puesto 2" : p2},{"Puesto 3" : p3}]
+    return resp
+
+
+
+
+# Función 5
+@app.get('/DeveloperReviewsAnalysis/')
+def developer_reviews_analysis(desarrolladora:str):
+    df_dev = df_DevRevAna[df_DevRevAna.developer == desarrolladora]
+    df_dev = df_dev.sentiment_analysis.value_counts()
+    neg_ans = 'Negative = ' + str(df_dev[0])
+    pos_ans = 'Positive = ' + str(df_dev[2])
+    resp = {desarrolladora:[pos_ans, neg_ans]}
+    return resp
