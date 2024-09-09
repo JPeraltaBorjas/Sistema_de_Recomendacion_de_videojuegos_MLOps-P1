@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 from fastapi import FastAPI
 import pyarrow
 
@@ -17,6 +18,9 @@ df_UserForGenre_1=pd.read_parquet('./Dataset_funciones/df3_UserForGenre_1.parque
 df_UserForGenre_2=pd.read_parquet('./Dataset_funciones/df3_UserForGenre_2.parquet',engine='pyarrow')
 df_BestDevYear=pd.read_parquet('./Dataset_funciones/df4_BestDeveloperYear.parquet',engine='pyarrow')
 df_DevRevAna=pd.read_parquet('./Dataset_funciones/df5_DeveloperRewiewsAnalysis.parquet',engine='pyarrow')
+
+df_pivot=pd.read_parquet('./Dataset_funciones/df_recomendacion_PivotTable.parquet',engine='pyarrow')
+df_UserSimilarity=pd.read_parquet('./Dataset_funciones/df_recomendacion_UserSimilarity.parquet',engine='pyarrow')
 
 # Iniciamos la API
 @app.get('/')
@@ -155,4 +159,43 @@ def developer_reviews_analysis(desarrolladora:str):
     neg_ans = 'Negative = ' + str(df_dev[0])
     pos_ans = 'Positive = ' + str(df_dev[2])
     resp = {desarrolladora:[pos_ans, neg_ans]}
+    return resp
+
+
+
+# Sistema de recomendacion
+@app.get('/Recomendation System/')
+def recomendacion_usuario(id_de_usuario:str):
+    # Elegimos el usuario para el que queremos hacer la recomendación
+    target_user = id_de_usuario  # Ejemplo con el usuario 1
+
+    # Ordenamos las similitudes del usuario en orden descendente
+    similar_users = df_UserSimilarity.loc[target_user].sort_values(ascending=False)
+
+    # Excluimos al propio usuario (ya que la similitud consigo mismo es 1)
+    similar_users = similar_users.drop(target_user)
+
+    # Vemos los usuarios más similares
+    # print(similar_users.head())
+
+    # Obtenemos los juegos que el usuario objetivo ya ha calificado
+    user_games = df_pivot.loc[target_user]
+
+    # Filtramos los juegos que el usuario ya ha jugado o que no le gustaron (valores 0 o negativos)
+    games_user_played = user_games[user_games > 0].index
+
+    # Ahora buscamos los juegos que han disfrutado los usuarios más similares
+    # Seleccionamos los 5 usuarios más similares
+    top_similar_users = similar_users.head(5).index
+
+    # Filtramos los juegos que estos usuarios disfrutaron (con puntuaciones positivas)
+    recommended_games = df_pivot.loc[top_similar_users].mean().sort_values(ascending=False)
+
+    # Excluimos los juegos que ya jugó el usuario
+    recommended_games = recommended_games.drop(games_user_played)
+
+    # Recomendamos los 5 juegos mejor valorados entre usuarios similares
+    top_5_recommendations = recommended_games.head(5)
+
+    resp = "Juegos recomendados para el usuario:", list(top_5_recommendations.index)
     return resp
